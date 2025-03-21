@@ -19,11 +19,12 @@ You can install the development version of usedata from
 pak::pak("frankiethull/usedata")
 ```
 
-## Example
+## usedata example
 
-Following R Pkgs 2e Chapter 7, this package helps with the following: 1)
-adding a dataset to a package 2) creating the corresponding .R file 3)
-fills out the .R file to generates generic data documentation
+Following R Pkgs 2e Chapter 7, this package helps with the following:  
+1) adding a dataset to a package  
+2) creating the corresponding .R file  
+3) fills out the .R file to generates generic data documentation
 
 ``` r
 library(usedata)
