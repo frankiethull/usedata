@@ -1,18 +1,28 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # usedata
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of usedata is to help R package builders add and document data
-efficiently.
+The goal of usedata is to help R package builders add and document data efficiently.
 
 ## Installation
 
-You can install the development version of usedata from
-[GitHub](https://github.com/) with:
+You can install the development version of usedata from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
@@ -21,11 +31,12 @@ pak::pak("frankiethull/usedata")
 
 ## Example
 
-Following R Pkgs 2e Chapter 7, this package helps with the following: 1)
-adding a dataset to a package 2) creating the corresponding .R file 3)
-fills out the .R file to generates generic data documentation
+Following R Pkgs 2e Chapter 7, this package helps with the following:
+ 1) adding a dataset to a package
+ 2) creating the corresponding .R file
+ 3) fills out the .R file to generates generic data documentation 
 
-``` r
+```r
 library(usedata)
 
 corn_data <- maize::corn_data
@@ -45,3 +56,5 @@ usedata::use_data(corn_data,
                   "
               )
 ```
+
+
