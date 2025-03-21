@@ -1,0 +1,17 @@
+Package: usedata
+Title: built with "usethis" to help document package data
+Version: 0.0.0.9000
+Authors@R: 
+    person("frank", "hull", , "frankiethull@gmail.com", role = c("aut", "cre"))
+Description: usedata has a single goal, to help R package builders add and document data efficiently. 
+             usedata is based on R Pkg 2e Chapter 7. 
+             automating small manual steps for developers that register lots of example datasets.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    usethis
+Depends: 
+    R (>= 3.5)
+LazyData: true
