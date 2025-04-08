@@ -13,7 +13,9 @@ use_data(
   overwrite = TRUE,
   compress = "bzip2",
   version = 3,
-  ascii = FALSE
+  ascii = FALSE,
+  use_llm = FALSE,
+  model = "gemma3:4b"
 )
 }
 \arguments{
@@ -34,6 +36,10 @@ use_data(
 \item{version}{version defaults to 3 for usethis::use_data}
 
 \item{ascii}{ascii true or false for usethis::use_data}
+
+\item{use_llm}{an optional TRUE/FALSE argument to use an LLM to add additional detail to the data documentation}
+
+\item{model}{a local ollama model to use for the LLM if LLM \code{use_llm} is set to TRUE}
 }
 \value{
 saves off data in the pkg then creates and fills out a R script doc

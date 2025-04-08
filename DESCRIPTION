@@ -1,6 +1,6 @@
 Package: usedata
 Title: built with "usethis" to help document package data
-Version: 0.0.0.9000
+Version: 0.0.1.9000
 Authors@R: 
     person("frank", "hull", , "frankiethull@gmail.com", role = c("aut", "cre"))
 Description: usedata has a single goal, to help R package builders add and document data efficiently. 
@@ -11,7 +11,8 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
+    ellmer,
     usethis
 Depends: 
-    R (>= 3.5)
+    R (>= 4.4.1.0)
 LazyData: true

@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom ellmer chat_ollama
 #' @importFrom usethis dots
 #' @importFrom usethis get_objs_from_dots
 #' @importFrom usethis use_data
