@@ -14,36 +14,53 @@
 #'
 #' @returns saves off data in the pkg then creates and fills out a R script doc
 #' @export
-use_data <- \(...,
-              title       = "dataset",
-              description = "dataset of observations for something",
-              source      = "data source comes from",
-              internal = FALSE, overwrite = TRUE, compress = "bzip2", version = 3, ascii = FALSE,
-              use_llm = FALSE, model = "gemma3:4b"){
-
+use_data <- \(
+  ...,
+  title = "dataset",
+  description = "dataset of observations for something",
+  source = "data source comes from",
+  internal = FALSE,
+  overwrite = TRUE,
+  compress = "bzip2",
+  version = 3,
+  ascii = FALSE,
+  use_llm = FALSE,
+  model = "gemma3:4b"
+) {
   # get data frame name --------------------------------
   data_name <- usethis:::get_objs_from_dots(usethis:::dots(...))
 
   # save the data ---------------------------------------
-  usethis::use_data(...,
-                    internal  = internal,
-                    overwrite = overwrite,
-                    compress  = compress,
-                    version   = version,
-                    ascii     = ascii)
+  usethis::use_data(
+    ...,
+    internal = internal,
+    overwrite = overwrite,
+    compress = compress,
+    version = version,
+    ascii = ascii
+  )
 
   # create the documentation script ---------------------
   usethis::use_r(name = data_name, open = FALSE)
 
-
   # make generic documentation --------------------------
   data_header <- paste0(
-    '#\' ', title, '\n',
+    '#\' ',
+    title,
+    '\n',
     '#\'\n',
-    '#\' ', description, '\n',
+    '#\' ',
+    description,
+    '\n',
     '#\'\n',
-    '#\' @format ## `', data_name, '`\n',
-    '#\' a data frame with ', nrow(...), ' rows and ', ncol(...), ' columns: \n ',
+    '#\' @format ## `',
+    data_name,
+    '`\n',
+    '#\' a data frame with ',
+    nrow(...),
+    ' rows and ',
+    ncol(...),
+    ' columns: \n ',
     "#' \\describe{\n"
   )
 
@@ -57,49 +74,50 @@ use_data <- \(...,
     )
   }
 
-
   data_footer <- paste0(
     '#\\}\n',
-    '#\' @source ', source, '\n',
+    '#\' @source ',
+    source,
+    '\n',
     '#\'\n',
-    '"', data_name, '"', '\n'
+    '"',
+    data_name,
+    '"',
+    '\n'
   )
 
   data_doc <- c(data_header, data_footer)
 
   # optional llm call statement -------------------------
-   if(use_llm){
-      data_doc <- use_llm(...      = ...,
-                          data_doc = data_doc,
-                          model    = model)
-   }
+  if (use_llm) {
+    data_doc <- use_llm(... = ..., data_doc = data_doc, model = model)
+  }
 
   # write off initial documentation ---------------------
   r_file <- file.path("R", paste0(data_name, ".R"))
   writeLines(data_doc, r_file)
 
-  message(sprintf("Data '%s' has been added to the package and documented in 'R/%s.R'.", data_name, data_name))
+  message(sprintf(
+    "Data '%s' has been added to the package and documented in 'R/%s.R'.",
+    data_name,
+    data_name
+  ))
   message("Run 'devtools::document()' to generate the help files.")
-
 }
 
 
-
 # internal function for llm data documentation
-use_llm <- \(...,
-             data_doc,
-             model){
-
+use_llm <- \(..., data_doc, model) {
   #data <- ...
   # data meta information for llm:
-  data_str     <- capture.output(utils::str(...))
+  data_str <- capture.output(utils::str(...))
   data_summary <- capture.output(base::summary(...))
-  data_head    <- capture.output(utils::head(...))
-  dput_head    <- capture.output(dput(utils::head(...)))
-
+  data_head <- capture.output(utils::head(...))
+  dput_head <- capture.output(dput(utils::head(...)))
 
   # create a chat instance for data documentation:
-  chat <- ellmer::chat_ollama(system_prompt = "
+  chat <- ellmer::chat_ollama(
+    system_prompt = "
                               you are an technical writing assistant, data analyzer, and
                               expert in data documentation for R packages.
                               you will be given context about a dataset and drafted documentation.
@@ -107,7 +125,8 @@ use_llm <- \(...,
                               edit the documentation. **it is important that you adhere to the
                               documentation format and only return the edited documentation without backticks**.
                               ",
-                              model = model)
+    model = model
+  )
 
   # ask the llm to edit the data_doc and return it:
   # prompt <-  paste0(
@@ -128,18 +147,17 @@ use_llm <- \(...,
   #                    )
 
   # shorten the context:
-  prompt <-  paste0(
-                "## drafted data documentation: \n",
+  prompt <- paste0(
+    "## drafted data documentation: \n",
 
-                     data_doc, "\n\n\n",
+    data_doc,
+    "\n\n\n",
 
-                "## additional context for editing the documentation: \n",
+    "## additional context for editing the documentation: \n",
 
-                    "dput(head(dataset)): \n",
-                     paste(dput_head, collapse = "\n")
-                    )
-
-
+    "dput(head(dataset)): \n",
+    paste(dput_head, collapse = "\n")
+  )
 
   chat$chat(prompt)
 }
